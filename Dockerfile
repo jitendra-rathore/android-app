@@ -55,10 +55,13 @@ WORKDIR /usr/local/android
 #RUN git clone https://github.com/kwilliams2018/HomeAero.git
 COPY . .
 
-WORKDIR /usr/local/android/android-app
+WORKDIR /usr/local/android/
 RUN flutter build web
-
+RUN ls
 
 # Stage 2 - Create the run-time image
 FROM nginx
-COPY --from=build-env /usr/local/android/android-app/build/web /usr/share/nginx/html
+COPY --from=build-env /usr/local/android/build/web /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
